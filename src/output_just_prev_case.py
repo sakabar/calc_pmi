@@ -13,6 +13,7 @@ def sentence_func(knp_lines):
     if m0:
         pred = m0.group(1)
         cases = m0.group(2).split(';')
+        cases = [case for case in cases if case.split('/')[0] in ['ガ', 'ヲ', 'ニ', 'カラ']] #使う格をガ/ヲ/ニ/カラに限定
 
         bp_nums = [int(case.split('/')[3]) for case in cases if case.split('/')[3] != '-']
         if len(bp_nums) != 0:
