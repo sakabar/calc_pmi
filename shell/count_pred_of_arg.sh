@@ -17,7 +17,7 @@ file_cnt=0
 for f in $input_dir/*.basic; do
 # for f in `ls $input_dir | tail -n 100`; do
     file_cnt=$(( file_cnt + 1 ))
-    echo "$file_cnt / 261667"
+    echo "$file_cnt / 261667">&2
     # echo "$file_cnt / 100"
     lv $input_dir/$f:t | python src/count_arg_of_pred.py > $output_dir/$f:t
 done
