@@ -19,7 +19,12 @@ vocab_num=$[`wc -l $merged_count_file | awk '{print $1}'` - 1] #24321355
 all_sum_count=`LC_ALL=C grep " SUM$" $merged_count_file | awk '{print $1}'`
 count_arg_in_all_verbs=`LC_ALL=C grep " "$arg"$" $merged_count_file | awk '{print $1}'`
 
-para_num=10
+para_num=10 #並列数
+
+#出力先ファイルの初期化
+for i in {0..26}; do
+  cat /dev/null > $output_dir/$i".txt"
+done
 
 #para_numの数だけ並列実行を行う。
 #すごく読みにくい…
