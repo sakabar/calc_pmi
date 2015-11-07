@@ -6,8 +6,8 @@ calculate PMI of a pred and a argument.
 データは秘密。
 
 【/shell】
-calc_pmi_arg_all_verbs.sh :
-calc_pmi_arg_verb.sh :
+calc_pmi_arg_all_verbs.sh : ある項を引数として、指定したディレクトリ内の全ての動詞に対してPMIを計算し、出力する
+calc_pmi_arg_verb.sh : ある項を引数として、標準入力から受け取った共起回数のデータに基づき、ある動詞に関するPMIを計算し、出力する
 count_pred_of_arg.sh : src/count_arg_of_pred.pyを、forループで回す
 exe.sh :
 exe_all.sh :
