@@ -11,6 +11,7 @@ fi
 # arg_count_dir='/local/tsakaki/pa.data.basic.split.count' #count_pred_of_arg.shの出力先
 
 merged_count_file=/local/tsakaki/merged_count_of_arg.txt
+input_dir=/local/tsakaki/pa.data.filtered.count.split #このディレクトリ内に、00-26のディレクトリが存在しているとする(その中身は、count_pred_arg.shで作成した述語と項ごとのカウントファイル)
 output_dir=/local/tsakaki/pa.data.result
 
 arg=$1
@@ -18,6 +19,12 @@ arg=$1
 vocab_num=$[`wc -l $merged_count_file | awk '{print $1}'` - 1] #24321355
 all_sum_count=`LC_ALL=C grep " SUM$" $merged_count_file | awk '{print $1}'`
 count_arg_in_all_verbs=`LC_ALL=C grep " "$arg"$" $merged_count_file | awk '{print $1}'`
+
+#もしも(何故か)count_arg_in_all_verbsが空文字列の場合は、終了
+if [ -z $count_arg_in_all_verbs ]; then
+  echo "$arg"
+  exit 0
+fi
 
 para_num=10 #並列数
 
@@ -42,7 +49,10 @@ for i in {0..$[26 / $para_num]}; do
   for j in {$begin_num..$end_num}; do
     num=`printf "%02d" $j`
     echo $num"/26 @ exe.sh">&2
-    d=/local/tsakaki/pa.data.basic.split.count.split/pa.data.basic.split.count.$num
+    d=$input_dir/$num
+
+    # echo $arg $d $vocab_num $all_sum_count $count_arg_in_all_verbs >&2
+    # sleep 10000
 
     ( ./shell/calc_pmi_arg_all_verbs.sh $arg $d $vocab_num $all_sum_count $count_arg_in_all_verbs > $output_dir/$num".txt" ) &
   done

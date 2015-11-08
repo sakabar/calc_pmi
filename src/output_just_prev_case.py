@@ -36,7 +36,7 @@ def sentence_func(knp_lines):
                 if analysis_case_regex_match: #解析格がある場合
                     case = analysis_case_regex_match.group(1)
                     norm_form = norm_form_regex_match.group(1)
-                    print "%s:%s %s" % (norm_form, case, pred)
+                    print "%s:%s格 %s" % (norm_form, case, pred)
                     return
 
                 elif mod_regex_match: #解析格がない場合

@@ -21,3 +21,10 @@ src/count_arg_of_pred.py : ある動詞について、その動詞とある項�
 `lv /path/to/pa.data.basic.split/web15G-201306-237739.data.basic | python src/count_arg_of_pred.py > web15G-201306-237739.data.basic.count`
 
 output_just_prev_case.py : 
+
+メモ
+まず、pred.list.filteredを作成
+次に、count_pred_of_arg.shで回数をカウント
+そして、merge_count.shで回数をマージ
+まず、pred.list.filtered.count.split/00-26を作成
+いよいよ exe_all.sh
