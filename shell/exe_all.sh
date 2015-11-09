@@ -1,20 +1,28 @@
 #!/bin/zsh
 
 set -ue
-prev_case_file=just_prev_case.txt
+
+if [ $# -ne 1 ];then
+  echo "One argument is required">&2
+  exit 1
+fi
+
+prev_case_file=$1
+# prev_case_file=just_prev_case.txt
+# #FIXME ベタ打ち
+# lv ~/work/replace_with_antonym/data/input_uniq.knp \
+#   | python src/output_just_prev_case.py > $prev_case_file
+
+
 output_dir=/home/lr/tsakaki/work/calc_pmi/result
 rm -rf $output_dir/*
 
-#FIXME ベタ打ち
-lv ~/work/replace_with_antonym/data/input_uniq.knp \
-  | python src/output_just_prev_case.py > $prev_case_file
-
-line=""
-
-# 自分/じぶん:ニ格 負ける/まける:動
+#$prev_case_fileには、
+#自分/じぶん:ニ格 負ける/まける:動
+#のような行が格納されている
 cat -n $prev_case_file \
   | while read line; do
-  sid=`echo $line | awk '{print $1}'`
+  sid=`echo $line | awk '{printf("%03d",$1)}'`
   arg=`echo $line | awk '{print $2}'`
   pred=`echo $line | awk '{print $3}'`
 
