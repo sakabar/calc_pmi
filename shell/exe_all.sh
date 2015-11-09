@@ -15,6 +15,7 @@ prev_case_file=$1
 
 
 output_dir=/home/lr/tsakaki/work/calc_pmi/result
+touch $output_dir/a.txt #ダミーファイルを作らないと、$output_dirが空だったときにエラーで止まる(set -eu)
 rm -rf $output_dir/*
 
 #$prev_case_fileには、
@@ -29,8 +30,8 @@ cat -n $prev_case_file \
   #fflushはシェルのコマンドには無い…?
   echo "$sid @ exe_all.sh "`date` | awk '{print $0}{fflush()}' >&2
   if [ $arg = "NONE" ]; then
-      touch $output_dir/$sid.txt
+    touch $output_dir/$sid.txt
   else
-    ./shell/exe.sh $arg > $output_dir/$sid.txt
+    ./shell/exe.sh $arg | awk -v pred=$pred '{print $1" "$2" "$3" "$4" "$5" "pred" "$6" "$7" "$8}' > $output_dir/$sid.txt
   fi
 done
