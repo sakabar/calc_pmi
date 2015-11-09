@@ -2,17 +2,19 @@
 import sys
 import re
 
-regex0 = re.compile('<格解析結果:([^:]+:[^:0-9]+)[0-9]*:([^>]+)>')
-regex1 = re.compile('<係:([^>]+)>')
-regex2 = re.compile('<正規化代表表記:([^>]+)>')
+mod_regex = re.compile('<係:([^>]+)>')
+analysis_case_regex = re.compile('<解析格:([^>]+)>')
+case_result_regex = re.compile('<格解析結果:([^:]+:[^:0-9]+)[0-9]*:([^>]+)>')
+norm_form_regex = re.compile('<正規化代表表記:([^>]+)>')
 
 def sentence_func(knp_lines):
     last_basic_phrase=[line for line in knp_lines if line[0] == '+'][-1]
 
-    m0 = regex0.search(last_basic_phrase)
-    if m0:
-        pred = m0.group(1)
-        cases = m0.group(2).split(';')
+    case_result_match = case_result_regex.search(last_basic_phrase)
+    if case_result_match:
+        pred = case_result_match.group(1)
+        cases = case_result_match.group(2).split(';')
+        cases = [case for case in cases if case.split('/')[0] in ['ガ', 'ヲ', 'ニ', 'カラ']] #使う格をガ/ヲ/ニ/カラに限定
 
         bp_nums = [int(case.split('/')[3]) for case in cases if case.split('/')[3] != '-']
         if len(bp_nums) != 0:
@@ -26,24 +28,41 @@ def sentence_func(knp_lines):
             
             case = ""
             norm_form = ""
-            m1 = regex1.search(bp)
-            m2 = regex2.search(bp)
+            mod_regex_match = mod_regex.search(bp)
+            norm_form_regex_match = norm_form_regex.search(bp)
+            analysis_case_regex_match = analysis_case_regex.search(bp)
 
-            if m1 and m2:
-                case = m1.group(1)
-                norm_form = m2.group(1)
-                print "%s:%s %s" % (norm_form, case, pred)
+            if norm_form_regex_match:
+                if analysis_case_regex_match: #解析格がある場合
+                    case = analysis_case_regex_match.group(1)
+                    norm_form = norm_form_regex_match.group(1)
+                    print "%s:%s格 %s" % (norm_form, case, pred)
+                    return
+
+                elif mod_regex_match: #解析格がない場合
+                    case = mod_regex_match.group(1)
+                    norm_form = norm_form_regex_match.group(1)
+                    print "%s:%s %s" % (norm_form, case, pred)
+                    return
+
+                else:
+                    print "NONE 0"# % pred
+                    return
+
             else:
-                print "NONE 0"# % pred
+                print "NONE 1"# % pred
+                return
 
         else:
-            print "NONE 1"# % pred
+            print "NONE 2"# % pred
+            return
 
     else:
-        print "NONE 2"# % pred
+        print "NONE 3"# % pred
+        return
 
+    print "NONE 4"# % pred
     return
-    
 
 def main():
     knp_lines = []
