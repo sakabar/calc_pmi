@@ -2,7 +2,8 @@
 
 set -ue
 prev_case_file=just_prev_case.txt
-output_dir=/home/lr/tsakaki/work/calc_pmi
+output_dir=/home/lr/tsakaki/work/calc_pmi/result
+rm -rf $output_dir/*
 
 #FIXME ベタ打ち
 lv ~/work/replace_with_antonym/data/input_uniq.knp \
@@ -17,7 +18,8 @@ cat -n $prev_case_file \
   arg=`echo $line | awk '{print $2}'`
   pred=`echo $line | awk '{print $3}'`
 
-  echo $sid >&2
+  #fflushはシェルのコマンドには無い…?
+  echo "$sid @ exe_all.sh "`date` | awk '{print $0}{fflush()}' >&2
   if [ $arg = "NONE" ]; then
       touch $output_dir/$sid.txt
   else
