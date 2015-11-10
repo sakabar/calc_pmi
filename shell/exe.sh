@@ -62,10 +62,12 @@ for i in {0..$[26 / $para_num]}; do
 done
 
 #後始末
-nbest_num=20 #PMIの上位何件を取るか?
+nbest_num=1000 #PMIの上位何件を取るか?
+freq_th=0 #述語と項のペアの頻度が10以上のものに対してPMIを計算する(レアなせいでPMIが高くなっている語を除く)
 
 #全体のnベストに入るためには、分割したファイルそれぞれで
 #nベストに入っている必要があることを利用する
 for i in {00..26}; do
-  LC_ALL=C sort -nr $output_dir/$$_$i.txt | head -n $nbest_num
+  cat $output_dir/$$_$i.txt | awk -v freq=$freq_th '$2 >= freq {print $0}' \
+    | LC_ALL=C sort -nr  | head -n $nbest_num
 done | LC_ALL=C sort -nr | head -n $nbest_num
