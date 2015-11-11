@@ -20,7 +20,7 @@ set -ue
 
 #使う述語全てのカウントをマージ
 #2万ファイルに関して、5分くらい
-./shell/merge_count.sh
+./shell/merge_count.sh /local/tsakaki/pa.count.filtered > /local/tsakaki/merged_count_of_arg.txt
 
 #出力用ディレクトリを作成し、適当に分割する
 source_dir=/local/tsakaki/pa.count.filtered
