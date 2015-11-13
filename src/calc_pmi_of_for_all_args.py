@@ -92,7 +92,7 @@ def main():
             #lambdaの部分がややこしい。items()メソッドで(key, value)のタプルを作って、x[1]でvalueを取り、そのvalue(タプル)の0番目であるPMIをとって、これをキーとしてソートする
 
             take_num = 1000 #20
-            freq_th = 100 #頻度がこれ以上の(項, 述語)ペアのみを対象とする
+            freq_th = 0 #頻度がこれ以上の(項, 述語)ペアのみを対象とする
             ans_items = [(k,v) for k, v in ans_log_PMI_dict.items() if v[1][0] >= freq_th]
             ranked = sorted(ans_items, key=lambda x:x[1][0], reverse=True)
             ranked = more_itertools.take(take_num, ranked)
