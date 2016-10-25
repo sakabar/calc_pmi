@@ -71,3 +71,5 @@ for i in {00..26}; do
   cat $output_dir/$$_$i.txt | awk -v freq=$freq_th '$2 >= freq {print $0}' \
     | LC_ALL=C sort -nr  | head -n $nbest_num
 done | LC_ALL=C sort -nr | head -n $nbest_num
+
+rm -rf $output_dir/$$"_*.txt"

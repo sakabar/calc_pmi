@@ -77,7 +77,7 @@ def main():
                     sum_v = count_arg_given_pred
                 elif arg.split(':')[1] == input_arg_case: #入力した項と同じ格のみ対象とする
                     try:
-                        log_PMI = math.log10(count_arg_given_pred) - math.log10(sum_v) + math.log10(sum_all) - math.log10(merged_count_of_arg_dic[arg])
+                        log_PMI = math.log(count_arg_given_pred) - math.log(sum_v) + math.log(sum_all) - math.log(merged_count_of_arg_dic[arg])
                     except:
                         raise Exception("%s %s %s" % (arg, pred, pred_file_name))
                     ans_log_PMI_dict[arg] = (log_PMI, (count_arg_given_pred, sum_v, sum_all, merged_count_of_arg_dic[arg]))
@@ -91,8 +91,8 @@ def main():
             #ans_log_PMI_dictをソートして出力
             #lambdaの部分がややこしい。items()メソッドで(key, value)のタプルを作って、x[1]でvalueを取り、そのvalue(タプル)の0番目であるPMIをとって、これをキーとしてソートする
 
-            take_num = 1000 #20
-            freq_th = 0 #頻度がこれ以上の(項, 述語)ペアのみを対象とする
+            take_num = 10000 #20
+            freq_th = 10 #頻度がこれ以上の(項, 述語)ペアのみを対象とする
             ans_items = [(k,v) for k, v in ans_log_PMI_dict.items() if v[1][0] >= freq_th]
             ranked = sorted(ans_items, key=lambda x:x[1][0], reverse=True)
             ranked = more_itertools.take(take_num, ranked)
